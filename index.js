@@ -58,11 +58,11 @@ exports.handler = function(event, context, callback) {
           MAX_WIDTH / size.width,
           MAX_HEIGHT / size.height,
         );
-        // let width  = scalingFactor * size.width;
-        // let height = scalingFactor * size.height;
+        let width  = scalingFactor * size.width;
+        let height = scalingFactor * size.height;
 
         // Transform the image buffer in memory.
-        this.resize(100, 100)
+        this.resize(width, height)
           .toBuffer(imageType, function(err, buffer) {
             if (err) {
               next(err);

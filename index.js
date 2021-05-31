@@ -41,6 +41,9 @@ exports.handler = function(event, context, callback) {
   async.waterfall([
     function download(next) {
       // Download the image from S3 into a buffer.
+      console.log('1-------next', next);
+      console.log('2----------srcBucket', srcBucket);
+      console.log('3-------------srcKey', srcKey);
       s3.getObject({
         Bucket: srcBucket,
         Key: srcKey,
@@ -48,17 +51,18 @@ exports.handler = function(event, context, callback) {
       next);
     },
     function transform(response, next) {
+        console.log('------------ishaq----------------', response);
       gm(response.Body).size(function(err, size) {
         // Infer the scaling factor to avoid stretching the image unnaturally.
         let scalingFactor = Math.min(
           MAX_WIDTH / size.width,
           MAX_HEIGHT / size.height,
         );
-        let width  = scalingFactor * size.width;
-        let height = scalingFactor * size.height;
+        // let width  = scalingFactor * size.width;
+        // let height = scalingFactor * size.height;
 
         // Transform the image buffer in memory.
-        this.resize(width, height)
+        this.resize(100, 100)
           .toBuffer(imageType, function(err, buffer) {
             if (err) {
               next(err);
